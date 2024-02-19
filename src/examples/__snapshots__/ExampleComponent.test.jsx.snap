@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ExampleComponent component > ArrayComponent shapshot 1`] = `
+"Array [
+  <div>
+    Test Component
+  </div>,
+  <ImportedComponent />,
+]"
+`;
+
+exports[`ExampleComponent component > FalseComponent shapshot 1`] = `"null"`;
+
+exports[`ExampleComponent component > NullComponent shapshot 1`] = `"null"`;
+
+exports[`ExampleComponent component > SimpleComponent shapshot 1`] = `
+"<div>
+  <h1>
+    head
+  </h1>
+  <p>
+    SimpleComponent
+    <b>
+      Bold content
+    </b>
+  </p>
+</div>"
+`;
+
+exports[`ExampleComponent component > render > snapshot 1`] = `
+"<div>
+  <ImportedComponent
+    className="imported-component"
+    label={
+      Object {
+        "defaultMessage": "I am imported",
+        "description": "File Control Label",
+        "id": "examples.importedComponentLabel",
+      }
+    }
+  />
+  <div>
+    <h1>
+      I am a heading
+    </h1>
+    <span>
+      I am a span
+    </span>
+  </div>
+</div>"
+`;
