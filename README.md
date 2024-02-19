@@ -10,7 +10,7 @@ Provides a shallow render of a given react component.
 #### Usage
 import renderer
 ```js
-import { shallow } from '@edx/react-unit-test-utils';
+import { shallow } from '@muselesscreator/react-shallow-snapshot';
 ```
 Mock local components for shallow rendering
 ```js
@@ -43,7 +43,7 @@ Component library mocking utility intended for imported libraries of many comple
 
 #### Usage
 ```js
-jest.mock('@edx/paragon', () => jest.requireActual('@edx/react-unit-test-utils').mockComponents({
+jest.mock('@edx/paragon', () => jest.requireActual('@muselesscreator/react-shallow-snapshot').mockComponents({
   Button: 'Button',
   Icon: 'Icon',
   Form: {
