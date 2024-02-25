@@ -1,4 +1,6 @@
 /* v8 ignore start */
+import setMockName from './setMockName';
+
 /**
  * Mock a single component, or a nested component so that its children render nicely
  * in snapshots.
@@ -19,7 +21,7 @@ export const mockNestedComponent = (
     return contents;
   }
   const fn = (() => name) as unknown as Record<string, unknown>;
-  Object.defineProperty(fn, 'name', { value: name });
+  setMockName(fn as unknown as () => unknown, name);
   Object.keys(contents).forEach((nestedName) => {
     const value = contents[nestedName] as string | Record<string, unknown>;
     if (typeof value === 'object') {

@@ -11,6 +11,9 @@ export const ExampleComponent = () => {
     handleClickImportedComponent,
   } = useExampleComponentData();
   const { formatMessage } = useIntl();
+  console.log({ handleClickImportedComponent });
+  console.log(handleClickImportedComponent.getMockName());
+
   return (
     <div>
       <ImportedComponent

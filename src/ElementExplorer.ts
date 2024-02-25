@@ -88,7 +88,7 @@ class ElementExplorer {
     return isEqual("data" in el ? el.data : el, this.data);
   }
 
-  get snapshot(): string {
+  get snapshot(): string | object | object[] {
     return this.toSnapshot(this.el);
   }
 }

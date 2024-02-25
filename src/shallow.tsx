@@ -78,7 +78,7 @@ class ReactShallowRenderer {
       output,
       {
         plugins: [plugins.ReactTestComponent],
-        printFunctionName: false,
+        // printFunctionName: false,
       },
     );
     return formatted;
@@ -173,7 +173,7 @@ class ReactShallowRenderer {
     return out;
   }
 
-  static toSnapshot(data: RenderOutput): string {
+  static toSnapshot(data: RenderOutput): object | string | object[] {
     if (typeof data === 'string' || typeof data === 'boolean' || data === null) {
       return `${data}`;
     }

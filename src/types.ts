@@ -12,7 +12,7 @@ export type RenderData = ReactTestRendererJSON & {
 export type Node = React.ReactElement | RenderData | string;
 export type Wrapper = (props: { children: JSX.Element }) => React.JSX.Element;
 export type Renderer = (() => Wrapper) | null;
-export type toSnapshotFunction = (d: RenderOutput) => string;
+export type toSnapshotFunction = (d: RenderOutput) => object | string | object[];
 
 export type ShallowTarget = GenericTarget | React.ReactElement | ShallowTarget[];
 

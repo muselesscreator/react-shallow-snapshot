@@ -38,6 +38,7 @@ exports[`ExampleComponent component > render > snapshot 1`] = `
         "id": "examples.importedComponentLabel",
       }
     }
+    onClick={[Function hooks.handleClickImportedComponent]}
   />
   <div>
     <h1>

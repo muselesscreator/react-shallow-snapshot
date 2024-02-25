@@ -10,6 +10,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import { formatMessage, shallow } from '..';
+import setMockName from '../setMockName';
 import ImportedComponent from './ImportedComponent';
 import useExampleComponentData from './hooks';
 import ExampleComponent, {
@@ -36,11 +37,9 @@ let hookProps;
 describe('ExampleComponent component', () => {
   beforeAll(() => {
     hookProps = {
-      fileInputRef: { current: null },
-      gradeExportUrl: 'test-grade-export-url',
-      handleClickImportGrades: vi.fn().mockName('hooks.handleClickImportGrades'),
-      handleFileInputChange: vi.fn().mockName('hooks.handleFileInputChange'),
+      handleClickImportedComponent: vi.fn(),
     };
+    setMockName(hookProps.handleClickImportedComponent, 'hooks.handleClickImportedComponent');
     useExampleComponentData.mockReturnValue(hookProps);
     el = shallow(<ExampleComponent />);
   });
