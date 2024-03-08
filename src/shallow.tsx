@@ -173,7 +173,7 @@ export class ReactShallowRenderer {
     return out;
   }
 
-  static toSnapshot(data: RenderOutput): object | string | object[] {
+  static toSnapshot(data: RenderOutput): string {
     if (typeof data === 'string' || typeof data === 'boolean' || data === null) {
       return `${data}`;
     }

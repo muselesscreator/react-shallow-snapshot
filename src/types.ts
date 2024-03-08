@@ -12,7 +12,7 @@ export type RenderData = ReactTestRendererJSON & {
 export type Node = React.ReactElement | RenderData | string;
 export type Wrapper = (props: { children: JSX.Element }) => React.JSX.Element;
 export type Renderer = (() => Wrapper) | null;
-export type toSnapshotFunction = (d: RenderOutput) => object | string | object[];
+export type toSnapshotFunction = (d: RenderOutput) => string;
 
 export type ShallowTarget = GenericTarget | React.ReactElement | ShallowTarget[];
 
@@ -23,6 +23,7 @@ export type RenderOutput = GenericTarget | RenderData | RenderOutput[];
 export type ExplorerData = {
   el: RenderOutput,
   props: Record<string, unknown>,
+  snapshot: string,
   toSnapshot: toSnapshotFunction,
   type: string | null,
   children: ExplorerData[],
