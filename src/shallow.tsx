@@ -33,7 +33,7 @@ const getNodeName = (node: Node): string => {
   return '';
 };
 
-class ReactShallowRenderer {
+export class ReactShallowRenderer {
   shallowRenderer: Renderer = null;
   shallowWrapper: ReactTestRendererJSON | ReactTestRendererJSON[] | null = null;
   toSnapshot: toSnapshotFunction = ReactShallowRenderer.toSnapshot;
