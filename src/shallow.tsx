@@ -1,6 +1,6 @@
 /* v8 ignore start */
 import prettyFormat, { plugins } from 'pretty-format';
-import React from 'react';
+import * as React from 'react';
 import ReactTestRenderer, {
  ReactTestRendererJSON,
 } from 'react-test-renderer';
