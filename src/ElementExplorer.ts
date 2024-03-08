@@ -44,8 +44,8 @@ class ElementExplorer {
   }
 
   findByTestId(testId: string): types.ExplorerData[] {
-    const elements = [] as ElementExplorer[];
-    const findChildrenByTestId = (el: ElementExplorer) => {
+    const elements = [] as types.ExplorerData[];
+    const findChildrenByTestId = (el: types.ExplorerData) => {
       if (el.props['data-testid'] === testId) {
         elements.push(el);
       }
@@ -59,8 +59,8 @@ class ElementExplorer {
 
   findByType(type: string | { name: string }): types.ExplorerData[] {
     const typeString = typeof type === 'string' ? type : type.name;
-    const elements = [] as ElementExplorer[];
-    const findChildrenByType = (el: ElementExplorer) => {
+    const elements = [] as types.ExplorerData[];
+    const findChildrenByType = (el: types.ExplorerData) => {
       if (el.type === typeString) {
         elements.push(el);
       }
@@ -84,7 +84,7 @@ class ElementExplorer {
     return out;
   }
 
-  matches(el: ElementExplorer | JSX.Element) {
+  matches(el: types.ExplorerData | JSX.Element) {
     return isEqual("data" in el ? el.data : el, this.data);
   }
 

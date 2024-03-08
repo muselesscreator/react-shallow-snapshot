@@ -27,4 +27,5 @@ export type ExplorerData = {
   type: string | null,
   children: ExplorerData[],
   parent: ExplorerData | null,
+  matches: (el: ExplorerData | JSX.Element) => boolean,
 };
