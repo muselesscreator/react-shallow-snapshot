@@ -72,7 +72,7 @@ export class ReactShallowRenderer {
     return data === null || data === false;
   }
 
-  get snapshot() {
+  get snapshot(): string {
     const output = this.getRenderOutput(true);
     const formatted = prettyFormat(
       output,
