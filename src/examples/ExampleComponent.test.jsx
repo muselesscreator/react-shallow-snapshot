@@ -59,6 +59,10 @@ describe('ExampleComponent component', () => {
         const control = el.instance.findByType(ImportedComponent)[0];
         expect(control.props.onClick).toEqual(hookProps.handleClickImportedComponent);
       });
+      test('findByClassName', () => {
+        const control = el.instance.findByClassName('imported-component')[0];
+        expect(control.matches(el.instance.findByType(ImportedComponent)[0])).toEqual(true);
+      });
       test('random', () => {
         const control = el.instance.findByType('div')[1];
         const expected = shallow(

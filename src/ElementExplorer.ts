@@ -72,6 +72,20 @@ class ElementExplorer {
     return elements;
   }
 
+  findByClassName(className: string): types.ExplorerData[] {
+    const elements = [] as types.ExplorerData[];
+    const findChildrenByClassName = (el: types.ExplorerData) => {
+      if (el.props.className === className) {
+        elements.push(el);
+      }
+      el.children.forEach(child => {
+        findChildrenByClassName(child);
+      });
+    };
+    findChildrenByClassName(this);
+    return elements;
+  }
+
   get data(): types.RenderOutput | types.ExplorerData {
     if (this.type === null) {
       return this.el;
