@@ -1,4 +1,3 @@
-import React from 'react';
 import { ReactTestRendererJSON } from 'react-test-renderer';
 
 export type GenericTarget = string | null | boolean;
@@ -19,6 +18,7 @@ export type ShallowTarget = GenericTarget | React.ReactElement | ShallowTarget[]
 export type ShallowChild = string | React.ReactElement;
 
 export type RenderOutput = GenericTarget | RenderData | RenderOutput[];
+export type RawRenderData = { type: string, props: Record<string, unknown> };
 
 export type ExplorerData = {
   el: RenderOutput,

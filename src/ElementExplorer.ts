@@ -98,8 +98,21 @@ class ElementExplorer {
     return out;
   }
 
+  get rawData(): types.RawRenderData {
+    const data = this.data as types.ExplorerData;
+    const { props, children } = data;
+    const type = data.type as string;
+    const loadedChildren = children.length > 1 ? children : children[0];
+    return { props: { ...props, children: loadedChildren }, type };
+  }
+
   matches(el: types.ExplorerData | JSX.Element) {
-    return isEqual("data" in el ? el.data : el, this.data);
+    const elData = ("data" in el ? el.data : el) as types.RawRenderData;
+    const toCheck = {
+      type: elData.type,
+      props: elData.props,
+    };
+    return isEqual(this.rawData, toCheck);
   }
 
   get snapshot(): string {
