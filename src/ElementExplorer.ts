@@ -1,4 +1,3 @@
-/* v8 ignore start */
 import { isEqual } from 'lodash';
 import * as types from './types';
 
@@ -107,10 +106,13 @@ class ElementExplorer {
   }
 
   matches(el: types.ExplorerData | JSX.Element) {
-    const elData = ("data" in el ? el.data : el) as types.RawRenderData;
+    if ("data" in el) {
+      const elData = el.data;
+      return isEqual(this.data, elData);
+    }
     const toCheck = {
-      type: elData.type,
-      props: elData.props,
+      type: el.type,
+      props: el.props,
     };
     return isEqual(this.rawData, toCheck);
   }

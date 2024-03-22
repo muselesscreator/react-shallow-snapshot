@@ -136,7 +136,19 @@ export class ReactShallowRenderer {
         (node) => this.transformNode(node, render),
       ),
       props: {
-        ...passedProps,
+        ...Object.keys(passedProps).reduce((acc, key) => {
+          const value = passedProps[key];
+          if (React.isValidElement(value)) {
+            const el = ReactShallowRenderer.shallow(value);
+            if (el !== null) {
+              return { ...acc, [key]: new ElementExplorer(
+                (el as ReactShallowRenderer).getRenderOutput(),
+                ReactShallowRenderer.toSnapshot
+              ) };
+            }
+          }
+          return { ...acc, [key]: value };
+        }, {}),
         ...(key ? { key } : {}),
       },
     };
