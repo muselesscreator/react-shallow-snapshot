@@ -54,3 +54,6 @@ jest.mock('@edx/paragon', () => jest.requireActual('@muselesscreator/react-shall
 
 // Provides mocks for <Button>, <Icon>, <Form>, <Form.Group>, and <Form.Control> with appropriate mocks to appear legibly in the snapshot.
 ```
+
+## API Documentation
+https://muselesscreator.github.io/react-shallow-snapshot/
