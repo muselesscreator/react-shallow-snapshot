@@ -13,7 +13,8 @@ declare global {
 }
 
 /**
- * Mocked formatMessage provided by react-intl
+ * Mocked formatMessage provided by react-intl that should work
+ * well in snapshots.
  */
 export const formatMessage = (
   msg: Record<string, unknown>,

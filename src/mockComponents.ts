@@ -2,19 +2,21 @@
 import setMockName from './setMockName';
 
 /**
+ * @typedef MockNestedComponent
  * Mock a single component, or a nested component so that its children render nicely
  * in snapshots.
- * @param {string} name - parent component name
- * @param {obj} contents - object of child components with intended component
  *   render name.
  * @return {func} - mock component with nested children.
- *
  * usage:
- *   mockNestedComponent('Card', { Body: 'Card.Body', Form: { Control: { Feedback: 'Form.Control.Feedback' }}... });
- *   mockNestedComponent('IconButton', 'IconButton');
+ * ```js
+ *  mockNestedComponent('Card', { Body: 'Card.Body', Form: { Control: { Feedback: 'Form.Control.Feedback' }}... });
+ *  mockNestedComponent('IconButton', 'IconButton');
+ *  ```
  */
 export const mockNestedComponent = (
+  /* parent component name */
   name: string,
+  /* object of child components with intended component */
   contents: string | Record<string, unknown>,
 ): string | Record<string, unknown> => {
   if (typeof contents !== 'object') {
@@ -35,15 +37,19 @@ export const mockNestedComponent = (
 
 /**
  * Mock a module of components.  nested components will be rendered nicely in snapshots.
- * @param {obj} mapping - component module mock config.
- * @return {obj} - module of flat and nested components that will render nicely in snapshots.
  * usage:
+ * ```js
  *   mockNestedComponents({
  *     Card: { Body: 'Card.Body' },
  *     IconButton: 'IconButton',
  *   })
+ *```
+ * @return {obj} - module of flat and nested components that will render nicely in snapshots.
  */
-export const mockNestedComponents = (mapping: Record<string, string | Record<string, unknown>>) => (
+export const mockNestedComponents = (
+ /* component module mock config. */
+  mapping: Record<string, string | Record<string, unknown>>
+) => (
   Object.entries(mapping).reduce(
     (obj, [name, value]) => ({
       ...obj,

@@ -1,11 +1,11 @@
 /* v8 ignore start */
 /**
  * Mock a single function so that its name shows up in snapshots.
- * @param {fn} fn - target function
- * @param {string} name - render name.
  */
 export const setMockName = (
+  /* target function */
   fn: () => unknown,
+  /* render name. */
   name: string,
 ) => {
   Object.defineProperty(fn, 'name', { value: name });
