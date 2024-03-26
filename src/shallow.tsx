@@ -16,8 +16,6 @@ import * as types from './types';
 import {
   RenderData,
   Node,
-  Wrapper,
-  Renderer,
   RenderOutput,
   toSnapshotFunction,
 } from './types';
@@ -34,24 +32,20 @@ const getNodeName = (node: Node): string => {
 };
 
 export class ReactShallowRenderer {
-  shallowRenderer: Renderer = null;
+  /** @internal */
   shallowWrapper: ReactTestRendererJSON | ReactTestRendererJSON[] | null = null;
+  /** @internal */
   toSnapshot: toSnapshotFunction = ReactShallowRenderer.toSnapshot;
 
-  constructor(
-    children: types.ShallowTarget,
-    options = {} as { Wrapper?: Wrapper },
-  ) {
-    const Wrapper = ("Wrapper" in options ? options.Wrapper : null) as Wrapper | null;
+  constructor(children: types.ShallowTarget) {
     const render = (content: React.ReactElement) => ReactTestRenderer.create(content).toJSON();
-    if (Wrapper === null) {
-      this.shallowWrapper = render(children as JSX.Element);
-    } else {
-      this.shallowWrapper = render(<Wrapper>{children as JSX.Element}</Wrapper>);
-    }
+    this.shallowWrapper = render(children as JSX.Element);
   }
 
-  static shallow(Component: types.ShallowTarget) {
+  static shallow(
+    /** Target JSX to render */
+    Component: types.ShallowTarget,
+  ) {
     let out;
     try {
       out = new ReactShallowRenderer(Component);
@@ -84,11 +78,12 @@ export class ReactShallowRenderer {
     return formatted;
   }
 
-  get instance(): types.ExplorerData {
+  get instance() {
     const output = this.getRenderOutput();
     return new ElementExplorer(output, ReactShallowRenderer.toSnapshot);
   }
 
+  /** @internal */
   extractType(node: Node): string {
     if (isLazy(node)) { return 'Lazy'; }
 
@@ -117,6 +112,7 @@ export class ReactShallowRenderer {
     return name;
   }
 
+  /** @internal */
   getRenderOutput(render = false): RenderOutput {
     if (this.shallowWrapper === null) {
       return null;
@@ -124,6 +120,7 @@ export class ReactShallowRenderer {
     return this.transformNode(this.shallowWrapper, render);
   }
 
+  /** @internal */
   extractProps(
     props: Record<string, unknown>  = {},
     render: boolean,
@@ -154,6 +151,7 @@ export class ReactShallowRenderer {
     };
   }
 
+  /** @internal */
   transformNode(
     node: RenderOutput | RenderOutput[],
     render: boolean,
@@ -185,6 +183,7 @@ export class ReactShallowRenderer {
     return out;
   }
 
+  /** @internal */
   static toSnapshot(data: RenderOutput): string {
     if (typeof data === 'string' || typeof data === 'boolean' || data === null) {
       return `${data}`;

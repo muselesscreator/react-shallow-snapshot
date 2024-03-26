@@ -70,7 +70,7 @@ describe('ExampleComponent component', () => {
             <h1>{formatMessage(messages.heading)}</h1>
             <span>{formatMessage(messages.span)}</span>
           </div>,
-        ).shallowWrapper;
+        ).instance;
         expect(control.matches(expected)).toEqual(true);
       });
     });

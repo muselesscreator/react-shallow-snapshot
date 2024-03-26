@@ -9,14 +9,40 @@ export type RenderData = ReactTestRendererJSON & {
   ['$$typeof']?: symbol,
 };
 export type Node = React.ReactElement | RenderData | string;
-export type Wrapper = (props: { children: JSX.Element }) => React.JSX.Element;
-export type Renderer = (() => Wrapper) | null;
+
 export type toSnapshotFunction = (d: RenderOutput) => string;
 
+/**
+ * The types of elements that can be shallow rendered.
+ * - `GenericTarget` is a string, null, or boolean.
+ *   - `null` is a placeholder for a component that doesn't render anything.
+ *   - `boolean` is a placeholder for a component that renders a boolean.
+ *   - `string` is a placeholder for a component that renders a string.
+ *   - `number` is a placeholder for a component that renders a number.
+ *   - `undefined` is a placeholder for a component that renders undefined.
+ *   - `null` is a placeholder for a component that renders null.
+ *   - `true` is a placeholder for a component that renders true.
+ *   - `false` is a placeholder for a component that renders false.
+ *  - `React.ReactElement` is a placeholder for a component that renders a React element.
+ *  - `ShallowTarget[]` is a placeholder for a component that renders an array of shallow targets.
+ */
 export type ShallowTarget = GenericTarget | React.ReactElement | ShallowTarget[];
 
-export type ShallowChild = string | React.ReactElement;
-
+/**
+ * The types of elements that can be returned from the react test renderer.
+ * - `GenericTarget` is a string, null, or boolean.
+ *   - `null` is a placeholder for a component that doesn't render anything.
+ *   - `boolean` is a placeholder for a component that renders a boolean.
+ *   - `string` is a placeholder for a component that renders a string.
+ *   - `number` is a placeholder for a component that renders a number.
+ *   - `undefined` is a placeholder for a component that renders undefined.
+ *   - `null` is a placeholder for a component that renders null.
+ *   - `true` is a placeholder for a component that renders true.
+ *   - `false` is a placeholder for a component that renders false.
+ * - `React.ReactElement` is a placeholder for a component that renders a React element.
+ * - `ShallowTarget[]` is a placeholder for a component that renders an array of shallow targets.
+ * @typedef RenderOutput
+ */
 export type RenderOutput = GenericTarget | RenderData | RenderOutput[];
 export type RawRenderData = { type: string, props: Record<string, unknown> };
 

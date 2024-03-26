@@ -22,6 +22,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"],
+    "out": "docs"
+  },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

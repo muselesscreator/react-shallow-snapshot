@@ -1,14 +1,22 @@
 import { isEqual } from 'lodash';
+import { ReactShallowRenderer } from './shallow';
 import * as types from './types';
 
 class ElementExplorer {
+  /** The rendered element data, which is the string content in the case of a base element */
   el: types.RenderOutput;
+  /** @internal */
   toSnapshot: types.toSnapshotFunction;
+  /** The props object of the rendered element */
   props: Record<string, unknown>;
+  /** The type of the rendered element */
   type: string | null;
+  /** The child elements of the rendered element */
   children: ElementExplorer[];
+  /** the parent element of the rendered element*/
   parent: ElementExplorer | null;
 
+  /** @internal */
   constructor(
     element: types.RenderOutput,
     toSnapshot: types.toSnapshotFunction,
@@ -42,9 +50,24 @@ class ElementExplorer {
     }
   }
 
-  findByTestId(testId: string): types.ExplorerData[] {
-    const elements = [] as types.ExplorerData[];
-    const findChildrenByTestId = (el: types.ExplorerData) => {
+  /**
+   * Find an element by its data-testid attribute
+   * @returns An array of ElementExplorer instances that match the testId
+   * @example
+   * ```ts
+   * const el = shallow(
+   *   <div data-testid="parent"><div data-testid="child"></div></div>
+   * );
+   * const explorer = el.instance;
+   * const childElements = explorer.findByTestId("child");
+   * ```
+   */
+  findByTestId(
+     /* The data-testid attribute value to search for */
+    testId: string
+  ): ElementExplorer[] {
+    const elements = [] as ElementExplorer[];
+    const findChildrenByTestId = (el: ElementExplorer) => {
       if (el.props['data-testid'] === testId) {
         elements.push(el);
       }
@@ -56,10 +79,22 @@ class ElementExplorer {
     return elements;
   }
 
-  findByType(type: string | { name: string }): types.ExplorerData[] {
+  /**
+   * Find an element by its type
+   * @returns An array of ElementExplorer instances that match the type
+   * @example
+   * ```ts
+   * const el = shallow(
+   *    <div><button>Test Button</button></div>
+   *  );
+   *  const explorer = el.instance;
+   *  const buttons = explorer.findByType('button');
+   * ```
+   */
+  findByType(type: string | { name: string }): ElementExplorer[] {
     const typeString = typeof type === 'string' ? type : type.name;
-    const elements = [] as types.ExplorerData[];
-    const findChildrenByType = (el: types.ExplorerData) => {
+    const elements = [] as ElementExplorer[];
+    const findChildrenByType = (el: ElementExplorer) => {
       if (el.type === typeString) {
         elements.push(el);
       }
@@ -71,9 +106,21 @@ class ElementExplorer {
     return elements;
   }
 
-  findByClassName(className: string): types.ExplorerData[] {
-    const elements = [] as types.ExplorerData[];
-    const findChildrenByClassName = (el: types.ExplorerData) => {
+  /**
+   * Find an element by its className
+   * @returns An array of ElementExplorer instances that match the className
+   * @example
+   * ```ts
+   * const el = shallow(
+   *   <div><button className="test-button">Test Button</button></div>
+   * );
+   * const explorer = el.instance;
+   * const buttons = explorer.findByClassName('test-button');
+   * ```
+   */
+  findByClassName(className: string): ElementExplorer[] {
+    const elements = [] as ElementExplorer[];
+    const findChildrenByClassName = (el: ElementExplorer) => {
       if (el.props.className === className) {
         elements.push(el);
       }
@@ -85,6 +132,7 @@ class ElementExplorer {
     return elements;
   }
 
+  /** @internal */
   get data(): types.RenderOutput | types.ExplorerData {
     if (this.type === null) {
       return this.el;
@@ -97,6 +145,7 @@ class ElementExplorer {
     return out;
   }
 
+  /** @internal */
   get rawData(): types.RawRenderData {
     const data = this.data as types.ExplorerData;
     const { props, children } = data;
@@ -105,16 +154,30 @@ class ElementExplorer {
     return { props: { ...props, children: loadedChildren }, type };
   }
 
-  matches(el: types.ExplorerData | JSX.Element) {
+  /**
+   * Check if the element matches the provided element
+   * @param el The element to compare
+   * @returns A boolean indicating if the element matches the provided element
+   * @example
+   * ```ts
+   * const el = shallow(
+   *   <div><button>Test Button</button></div>
+   * );
+   * const explorer = el.instance;
+   * const button = explorer.findByType('button')[0];
+   * const matches = button.matches(shallow(<button>Test Button</button>));
+   * expect(matches).toBe(true);
+   * ```
+   */
+  matches(el: ElementExplorer | ReactShallowRenderer) {
     if ("data" in el) {
       const elData = el.data;
       return isEqual(this.data, elData);
     }
-    const toCheck = {
-      type: el.type,
-      props: el.props,
-    };
-    return isEqual(this.rawData, toCheck);
+    if ("instance" in el) {
+      return isEqual(this.data, el.instance.data);
+    }
+    return isEqual(this.rawData, el);
   }
 
   get snapshot(): string {
