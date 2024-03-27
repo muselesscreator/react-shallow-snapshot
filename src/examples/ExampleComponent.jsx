@@ -19,6 +19,7 @@ export const ExampleComponent = () => {
         label={messages.importedComponentLabel}
         onClick={handleClickImportedComponent}
       />
+      <span customProp={<ImportedComponent />} />
       <div>
         <h1>{formatMessage(messages.heading)}</h1>
         <span>{formatMessage(messages.span)}</span>

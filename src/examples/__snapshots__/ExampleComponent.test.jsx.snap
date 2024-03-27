@@ -40,6 +40,9 @@ exports[`ExampleComponent component > render > snapshot 1`] = `
     }
     onClick={[Function hooks.handleClickImportedComponent]}
   />
+  <span
+    customProp="<ImportedComponent />"
+  />
   <div>
     <h1>
       I am a heading

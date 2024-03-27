@@ -168,9 +168,24 @@ export class ReactShallowRenderer {
     }
     const childrenArray = Array.isArray(node.children) ? node.children : [node.children];
     const { key } = node;
+    const extracted = this.extractProps(node.props, render, key);
+    const props = Object.keys(node.props).reduce((acc, key) => {
+      const value = node.props[key];
+      if (React.isValidElement(value)) {
+        const el = ReactShallowRenderer.shallow(value);
+        if (el !== null) {
+          return { ...acc, [key]: new ElementExplorer(
+            (el as ReactShallowRenderer).getRenderOutput(),
+            ReactShallowRenderer.toSnapshot
+          ).snapshot };
+        }
+      }
+      return { ...acc, [key]: value };
+    }, {});
     const out = {
       type: this.extractType(node),
-      props: { ...node.props, ...(key ? { key } : {}) },
+      // props: { ...node.props, ...(key ? { key } : {}) },
+      props,
       children: childrenArray.filter(Boolean).flatMap(
         (node) => this.transformNode(node, render),
       ),

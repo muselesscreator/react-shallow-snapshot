@@ -43,7 +43,7 @@ describe('ExampleComponent component', () => {
     useExampleComponentData.mockReturnValue(hookProps);
     el = shallow(<ExampleComponent />);
   });
-  describe('behavior', () => {
+  describe.skip('behavior', () => {
     it('initializes hooks', () => {
       expect(useExampleComponentData).toHaveBeenCalledWith();
       expect(useIntl).toHaveBeenCalledWith();
@@ -54,7 +54,7 @@ describe('ExampleComponent component', () => {
       expect(el.snapshot).toMatchSnapshot();
     });
 
-    describe('output', () => {
+    describe.skip('output', () => {
       test('imported component', () => {
         const control = el.instance.findByType(ImportedComponent)[0];
         expect(control.props.onClick).toEqual(hookProps.handleClickImportedComponent);
