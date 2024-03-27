@@ -121,37 +121,6 @@ export class ReactShallowRenderer {
   }
 
   /** @internal */
-  extractProps(
-    props: Record<string, unknown>  = {},
-    render: boolean,
-    key?: string,
-  ): Record<string, unknown>{
-    const { children, ...passedProps } = props;
-    const childrenArray = Array.isArray(children) ? children : [children];
-    return {
-      children: childrenArray.filter(Boolean).flatMap(
-        (node) => this.transformNode(node, render),
-      ),
-      props: {
-        ...Object.keys(passedProps).reduce((acc, key) => {
-          const value = passedProps[key];
-          if (React.isValidElement(value)) {
-            const el = ReactShallowRenderer.shallow(value);
-            if (el !== null) {
-              return { ...acc, [key]: new ElementExplorer(
-                (el as ReactShallowRenderer).getRenderOutput(),
-                ReactShallowRenderer.toSnapshot
-              ) };
-            }
-          }
-          return { ...acc, [key]: value };
-        }, {}),
-        ...(key ? { key } : {}),
-      },
-    };
-  }
-
-  /** @internal */
   transformNode(
     node: RenderOutput | RenderOutput[],
     render: boolean,
@@ -167,8 +136,6 @@ export class ReactShallowRenderer {
       return node;
     }
     const childrenArray = Array.isArray(node.children) ? node.children : [node.children];
-    const { key } = node;
-    const extracted = this.extractProps(node.props, render, key);
     const props = Object.keys(node.props).reduce((acc, key) => {
       const value = node.props[key];
       if (React.isValidElement(value)) {
@@ -182,10 +149,10 @@ export class ReactShallowRenderer {
       }
       return { ...acc, [key]: value };
     }, {});
+    const { key } = node;
     const out = {
       type: this.extractType(node),
-      // props: { ...node.props, ...(key ? { key } : {}) },
-      props,
+      props: { ...props, ...(key ? { key } : {}) },
       children: childrenArray.filter(Boolean).flatMap(
         (node) => this.transformNode(node, render),
       ),
