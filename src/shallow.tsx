@@ -1,5 +1,4 @@
 /* v8 ignore start */
-import prettyFormat, { plugins } from 'pretty-format';
 import * as React from 'react';
 import ReactTestRenderer, {
  ReactTestRendererJSON,
@@ -17,7 +16,6 @@ import {
   RenderData,
   Node,
   RenderOutput,
-  toSnapshotFunction,
 } from './types';
 import ElementExplorer from './ElementExplorer';
 
@@ -35,7 +33,6 @@ export class ReactShallowRenderer {
   /** @internal */
   shallowWrapper: ReactTestRendererJSON | ReactTestRendererJSON[] | null = null;
   /** @internal */
-  toSnapshot: toSnapshotFunction = ReactShallowRenderer.toSnapshot;
 
   constructor(children: types.ShallowTarget) {
     const render = (content: React.ReactElement) => ReactTestRenderer.create(content).toJSON();
@@ -66,21 +63,14 @@ export class ReactShallowRenderer {
     return data === null || data === false;
   }
 
-  get snapshot(): string {
+  get snapshot(): RenderOutput {
     const output = this.getRenderOutput(true);
-    const formatted = prettyFormat(
-      output,
-      {
-        plugins: [plugins.ReactTestComponent],
-        // printFunctionName: false,
-      },
-    );
-    return formatted;
+    return output;
   }
 
   get instance() {
     const output = this.getRenderOutput();
-    return new ElementExplorer(output, ReactShallowRenderer.toSnapshot);
+    return new ElementExplorer(output);
   }
 
   /** @internal */
@@ -121,6 +111,16 @@ export class ReactShallowRenderer {
   }
 
   /** @internal */
+  /**
+   * Transforms the ReactTestRenderer JSON into snapshot-friendly data by:
+   *   - Flattening children arrays
+   *   - Extracting props (including key) from React elements
+   *     - Recursively transforming nested React elements
+   *   - Extracting type from React elements
+   *     - Handling special types (Fragment, Lazy, Suspense, etc.)
+   *     - Handling ForwardRef and Memo components
+   *   - Adding $$typeof symbol to output for Jest serialization
+   */
   transformNode(
     node: RenderOutput | RenderOutput[],
     render: boolean,
@@ -135,21 +135,28 @@ export class ReactShallowRenderer {
     ) {
       return node;
     }
+    
+    // Returns node as an array of one element if it is not an array
     const childrenArray = Array.isArray(node.children) ? node.children : [node.children];
+
+    // Transforms react-type prop values into snapshot-friendly data
     const props = Object.keys(node.props).reduce((acc, key) => {
-      const value = node.props[key];
+      const value = node.props[key] as RenderOutput;
       if (React.isValidElement(value)) {
-        const el = ReactShallowRenderer.shallow(value);
-        if (el !== null) {
-          return { ...acc, [key]: new ElementExplorer(
-            (el as ReactShallowRenderer).getRenderOutput(),
-            ReactShallowRenderer.toSnapshot
-          ).snapshot };
-        }
+        return {
+          ...acc,
+          [key]: this.transformNode(value, render)
+        };
+      }
+      if (typeof value === 'function') {
+        const mockValue = value as Mock;
+        type Mock = { mockName: (name: string) => Mock, name: string };
+        mockValue.mockName(mockValue.name);
       }
       return { ...acc, [key]: value };
     }, {});
     const { key } = node;
+
     const out = {
       type: this.extractType(node),
       props: { ...props, ...(key ? { key } : {}) },
@@ -157,34 +164,14 @@ export class ReactShallowRenderer {
         (node) => this.transformNode(node, render),
       ),
     } as RenderData;
+
     if (render) {
       // this symbol is used by Jest to prettify serialized React test objects:
       // https://github.com/facebook/jest/blob/e0b33b74b5afd738edc183858b5c34053cfc26dd/packages/pretty-format/src/plugins/ReactTestComponent.ts
       out['$$typeof'] = Symbol.for('react.test.json');
     }
-    return out;
-  }
 
-  /** @internal */
-  static toSnapshot(data: RenderOutput): string {
-    if (typeof data === 'string' || typeof data === 'boolean' || data === null) {
-      return `${data}`;
-    }
-    if (Array.isArray(data)) {
-      return data.map((value: RenderOutput) => ReactShallowRenderer.toSnapshot(value)).join('');
-    }
-    const children = data.children as RenderData[];
-    return prettyFormat(
-      {
-        ...data,
-        $$typeof: Symbol.for('react.test.json'),
-        children: children.map((value: RenderData) => ReactShallowRenderer.toSnapshot(value)),
-      },
-      {
-        plugins: [plugins.ReactTestComponent],
-        printFunctionName: false,
-      },
-    );
+    return out;
   }
 }
 

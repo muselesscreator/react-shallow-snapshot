@@ -1,20 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`ExampleComponent component > ArrayComponent shapshot 1`] = `
-"Array [
+[
   <div>
     Test Component
   </div>,
   <ImportedComponent />,
-]"
+]
 `;
 
-exports[`ExampleComponent component > FalseComponent shapshot 1`] = `"null"`;
+exports[`ExampleComponent component > FalseComponent shapshot 1`] = `null`;
 
-exports[`ExampleComponent component > NullComponent shapshot 1`] = `"null"`;
+exports[`ExampleComponent component > NullComponent shapshot 1`] = `null`;
 
 exports[`ExampleComponent component > SimpleComponent shapshot 1`] = `
-"<div>
+<div>
   <h1>
     head
   </h1>
@@ -24,24 +24,24 @@ exports[`ExampleComponent component > SimpleComponent shapshot 1`] = `
       Bold content
     </b>
   </p>
-</div>"
+</div>
 `;
 
 exports[`ExampleComponent component > render > snapshot 1`] = `
-"<div>
+<div>
   <ImportedComponent
     className="imported-component"
     label={
-      Object {
+      {
         "defaultMessage": "I am imported",
         "description": "File Control Label",
         "id": "examples.importedComponentLabel",
       }
     }
-    onClick={[Function hooks.handleClickImportedComponent]}
+    onClick={[MockFunction hooks.handleClickImportedComponent]}
   />
   <span
-    customProp="<ImportedComponent />"
+    customProp={<ImportedComponent />}
   />
   <div>
     <h1>
@@ -51,5 +51,5 @@ exports[`ExampleComponent component > render > snapshot 1`] = `
       I am a span
     </span>
   </div>
-</div>"
+</div>
 `;

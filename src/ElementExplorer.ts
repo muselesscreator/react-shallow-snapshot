@@ -1,12 +1,12 @@
 import { isEqual } from 'lodash';
 import { ReactShallowRenderer } from './shallow';
+import toSnapshot from './toSnapshot';
 import * as types from './types';
+
 
 class ElementExplorer {
   /** The rendered element data, which is the string content in the case of a base element */
   el: types.RenderOutput;
-  /** @internal */
-  toSnapshot: types.toSnapshotFunction;
   /** The props object of the rendered element */
   props: Record<string, unknown>;
   /** The type of the rendered element */
@@ -19,11 +19,9 @@ class ElementExplorer {
   /** @internal */
   constructor(
     element: types.RenderOutput,
-    toSnapshot: types.toSnapshotFunction,
     parent: ElementExplorer | null = null
   ) {
     this.el = element;
-    this.toSnapshot = toSnapshot;
     this.props = {};
     this.type = null;
     this.children = [];
@@ -42,7 +40,7 @@ class ElementExplorer {
       this.type = element.type;
       if ("children" in element) {
         const mapChildren = (child: types.RenderOutput) => (
-          new ElementExplorer(child, toSnapshot, this)
+          new ElementExplorer(child, this)
         );
         this.children = (element.children as types.RenderOutput[])
           .map((value: types.RenderOutput) => mapChildren(value));
@@ -181,7 +179,7 @@ class ElementExplorer {
   }
 
   get snapshot(): string {
-    return this.toSnapshot(this.el);
+    return toSnapshot(this.el);
   }
 }
 
