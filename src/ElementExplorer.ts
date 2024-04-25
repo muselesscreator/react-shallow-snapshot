@@ -6,7 +6,7 @@ import * as types from './types';
 
 class ElementExplorer {
   /** The rendered element data, which is the string content in the case of a base element */
-  el: types.RenderOutput | ElementExplorer[];
+  el: types.RenderOutput;
   /** The props object of the rendered element */
   props: Record<string, unknown>;
   /** The type of the rendered element */
@@ -46,9 +46,8 @@ class ElementExplorer {
           .map((value: types.RenderOutput) => mapChildren(value));
       }
     } else {
-      this.el = element.map((child: types.RenderOutput) => (
-        new ElementExplorer(child, this)
-      ));
+      this.el = [];
+      this.children = element.map((child) => new ElementExplorer(child, this));
     }
   }
 
@@ -135,7 +134,7 @@ class ElementExplorer {
     const findChildrenByClassName = (el: ElementExplorer) => {
       if (Array.isArray(el)) {
         el.forEach((child) => {
-          findChildrenByTestId(child);
+          findChildrenByClassName(child);
         });
       }
       if (el.props.className === className) {
@@ -151,7 +150,7 @@ class ElementExplorer {
 
   /** @internal */
   get data(): types.RenderOutput | types.ExplorerData {
-    if (this.type === null) {
+    if (this.type === null && !Array.isArray(this.el)) {
       return this.el;
     }
     const out = {
