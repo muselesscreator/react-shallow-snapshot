@@ -16,7 +16,7 @@ Mock local components for shallow rendering
 ```js
 jest.mock('./LocalComponent', () => 'LocalComponent');
 ```
-Mock used component libraries (such as paragon) using provide `mockComponents` utility (see below).
+Mock used component libraries (such as paragon) using the provided `mockComponents` utility (see below).
 
 Generate render element
 ```js
