@@ -66,6 +66,11 @@ class ElementExplorer {
   ): ElementExplorer[] {
     const elements = [] as ElementExplorer[];
     const findChildrenByTestId = (el: ElementExplorer) => {
+      if (Array.isArray(el)) {
+        el.forEach((child) => {
+          findChildrenByTestId(child);
+        });
+      }
       if (el.props['data-testid'] === testId) {
         elements.push(el);
       }
@@ -93,6 +98,11 @@ class ElementExplorer {
     const typeString = typeof type === 'string' ? type : type.name;
     const elements = [] as ElementExplorer[];
     const findChildrenByType = (el: ElementExplorer) => {
+      if (Array.isArray(el)) {
+        el.forEach((child) => {
+          findChildrenByTestId(child);
+        });
+      }
       if (el.type === typeString) {
         elements.push(el);
       }
@@ -119,6 +129,11 @@ class ElementExplorer {
   findByClassName(className: string): ElementExplorer[] {
     const elements = [] as ElementExplorer[];
     const findChildrenByClassName = (el: ElementExplorer) => {
+      if (Array.isArray(el)) {
+        el.forEach((child) => {
+          findChildrenByTestId(child);
+        });
+      }
       if (el.props.className === className) {
         elements.push(el);
       }
