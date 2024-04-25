@@ -46,7 +46,7 @@ class ElementExplorer {
           .map((value: types.RenderOutput) => mapChildren(value));
       }
     } else {
-      this.el = [];
+      this.el = '';
       this.children = element.map((child) => new ElementExplorer(child, this));
     }
   }
@@ -150,7 +150,7 @@ class ElementExplorer {
 
   /** @internal */
   get data(): types.RenderOutput | types.ExplorerData {
-    if (this.type === null && !Array.isArray(this.el)) {
+    if (this.type === null || Array.isArray(this.el)) {
       return this.el;
     }
     const out = {
