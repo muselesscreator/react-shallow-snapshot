@@ -6,7 +6,7 @@ import * as types from './types';
 
 class ElementExplorer {
   /** The rendered element data, which is the string content in the case of a base element */
-  el: types.RenderOutput;
+  el: types.RenderOutput | ElementExplorer[];
   /** The props object of the rendered element */
   props: Record<string, unknown>;
   /** The type of the rendered element */
@@ -45,6 +45,10 @@ class ElementExplorer {
         this.children = (element.children as types.RenderOutput[])
           .map((value: types.RenderOutput) => mapChildren(value));
       }
+    } else {
+      this.el = element.map((child: types.RenderOutput) => (
+        new ElementExplorer(child, this)
+      ));
     }
   }
 
@@ -98,9 +102,9 @@ class ElementExplorer {
     const typeString = typeof type === 'string' ? type : type.name;
     const elements = [] as ElementExplorer[];
     const findChildrenByType = (el: ElementExplorer) => {
-      if (Array.isArray(el)) {
-        el.forEach((child) => {
-          findChildrenByTestId(child);
+      if (Array.isArray(el.el)) {
+        el.el.forEach((child: unknown) => {
+          findChildrenByType(child as ElementExplorer);
         });
       }
       if (el.type === typeString) {

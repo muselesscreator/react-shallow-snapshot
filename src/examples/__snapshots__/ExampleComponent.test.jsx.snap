@@ -11,6 +11,23 @@ exports[`ExampleComponent component > ArrayComponent shapshot 1`] = `
 
 exports[`ExampleComponent component > FalseComponent shapshot 1`] = `null`;
 
+exports[`ExampleComponent component > ListComponent shapshot 1`] = `
+[
+  <div>
+    <h1>
+      head
+    </h1>
+    <p>
+      SimpleComponent
+      <b>
+        Bold content
+      </b>
+    </p>
+  </div>,
+  "HelloThere",
+]
+`;
+
 exports[`ExampleComponent component > NullComponent shapshot 1`] = `null`;
 
 exports[`ExampleComponent component > SimpleComponent shapshot 1`] = `

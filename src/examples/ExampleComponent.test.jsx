@@ -17,6 +17,7 @@ import ExampleComponent, {
   SimpleComponent,
   NullComponent,
   FalseComponent,
+  ListComponent,
 } from './ExampleComponent';
 import messages from './messages';
 
@@ -89,6 +90,10 @@ describe('ExampleComponent component', () => {
   });
   test('ArrayComponent shapshot', () => {
     const el = shallow([<NullComponent />, <div>Test Component</div>, <ImportedComponent />]);
+    expect(el.snapshot).toMatchSnapshot();
+  });
+  test('ListComponent shapshot', () => {
+    const el = shallow(<ListComponent />);
     expect(el.snapshot).toMatchSnapshot();
   });
 });

@@ -34,5 +34,11 @@ export const StringComponent = () => 'HelloThere';
 export const NullComponent = () => null;
 export const FalseComponent = () => false;
 export const SimpleComponent = () => <div><h1>head</h1><p>SimpleComponent<b>Bold content</b></p></div>;
+export const ListComponent = () => (
+  <>
+    <SimpleComponent />
+    <StringComponent />
+  </>
+);
 
 export default ExampleComponent;
