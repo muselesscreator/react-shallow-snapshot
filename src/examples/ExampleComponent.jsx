@@ -36,8 +36,8 @@ export const FalseComponent = () => false;
 export const SimpleComponent = () => <div><h1>head</h1><p>SimpleComponent<b>Bold content</b></p></div>;
 export const ListComponent = () => (
   <>
-    <SimpleComponent />
-    <StringComponent />
+    <div><h1>head</h1><p>SimpleComponent<b>Bold content</b></p></div>
+    <span id="test"><p>SimpleComponent<b>Bold content</b></p></span>
   </>
 );
 

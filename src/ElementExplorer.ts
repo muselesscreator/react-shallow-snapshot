@@ -150,7 +150,7 @@ class ElementExplorer {
 
   /** @internal */
   get data(): types.RenderOutput | types.ExplorerData {
-    if (this.type === null || Array.isArray(this.el)) {
+    if (this.type === null) {
       return this.el;
     }
     const out = {

@@ -24,7 +24,16 @@ exports[`ExampleComponent component > ListComponent shapshot 1`] = `
       </b>
     </p>
   </div>,
-  "HelloThere",
+  <span
+    id="test"
+  >
+    <p>
+      SimpleComponent
+      <b>
+        Bold content
+      </b>
+    </p>
+  </span>,
 ]
 `;
 
