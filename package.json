@@ -1,6 +1,6 @@
 {
   "name": "@muselesscreator/react-shallow-snapshot",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "React shallow snapshot testing",
   "main": "dist/index.js",
   "release": {
