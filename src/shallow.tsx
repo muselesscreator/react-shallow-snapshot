@@ -151,7 +151,9 @@ export class ReactShallowRenderer {
       if (typeof value === 'function') {
         const mockValue = value as Mock;
         type Mock = { mockName: (name: string) => Mock, name: string };
-        mockValue.mockName(mockValue.name);
+        if (mockValue.mockName) {
+          mockValue.mockName(mockValue.name);
+        }
       }
       return { ...acc, [key]: value };
     }, {});
